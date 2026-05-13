@@ -9,30 +9,33 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden; /* Evita scroll doble */
+            overflow: hidden; 
             background-color: #f4f4f4;
             font-family: sans-serif;
         }
 
-        /* Contenedor de la carta */
+        /* Contenedor de la carta ajustado arriba */
         #menu-container {
-            height: 90vh; /* 90% de la altura total */
+            height: 90vh; 
             width: 100%;
             display: flex;
             justify-content: center;
-            align-items: center;
-            overflow-y: auto; /* Permite ver toda la imagen si es larga */
+            /* CAMBIO: Alinea el contenido al inicio (arriba) en lugar de al centro */
+            align-items: flex-start; 
+            overflow-y: auto; 
         }
 
         #menu-img {
             max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
+            /* Eliminamos max-height para permitir que la imagen fluya 
+               hacia abajo si es más larga que la pantalla */
+            height: auto;
+            display: block;
         }
 
         /* Footer flotante */
         footer {
-            height: 10vh; /* 10% de la altura total */
+            height: 10vh; 
             width: 100%;
             position: fixed;
             bottom: 0;
@@ -47,12 +50,11 @@
         }
 
         .flag {
-            height: 60%; /* Ajusta el tamaño de la bandera al footer */
+            height: 60%; 
             cursor: pointer;
             transition: opacity 0.3s ease;
         }
 
-        /* Estado activo (opacidad 50%) */
         .active {
             opacity: 0.5;
             cursor: default;
@@ -62,32 +64,24 @@
 <body>
 
     <div id="menu-container">
-        <!-- Por defecto abre nesi.jpg -->
         <img id="menu-img" src="nesi_es.jpg" alt="Carta del Bar">
     </div>
 
     <footer>
-        <!-- Bandera España (Asumida como la de nesi.jpg original) -->
         <img src="esp_flag.jpg" class="flag active" id="btn-esp" onclick="changeLang('nesi_es.jpg', 'btn-esp')" alt="Español">
-        
-        <!-- Bandera Cataluña -->
         <img src="cat_flag.jpg" class="flag" id="btn-cat" onclick="changeLang('nesi_cat.jpg', 'btn-cat')" alt="Català">
-        
-        <!-- Bandera UK/Ingles -->
         <img src="eng_flag.jpg" class="flag" id="btn-eng" onclick="changeLang('nesi_eng.jpg', 'btn-eng')" alt="English">
     </footer>
 
     <script>
         function changeLang(imgSrc, btnId) {
-            // Cambiar la imagen principal
             document.getElementById('menu-img').src = imgSrc;
-
-            // Resetear opacidad de todas las banderas
             const flags = document.querySelectorAll('.flag');
             flags.forEach(flag => flag.classList.remove('active'));
-
-            // Aplicar opacidad al 50% a la seleccionada
             document.getElementById(btnId).classList.add('active');
+            
+            /* Opcional: Al cambiar de idioma, vuelve arriba del todo */
+            document.getElementById('menu-container').scrollTop = 0;
         }
     </script>
 
